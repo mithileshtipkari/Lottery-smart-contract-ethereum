@@ -28,4 +28,8 @@ contract Lottery{
         require(msg.sender == manager);  // only manager can call pickwinner
         _;
     }
+
+    function getPlayers() public view returns (address[]){
+        return listOfPlayers;
+    }
 }
