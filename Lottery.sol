@@ -19,6 +19,8 @@ contract Lottery{
     }
 
     function pickWinner() public{
+        require(msg.sender == manager);  // only manager should be able to call pickWinner() function
+
         uint index = random() % listOfPlayers.length;
         listOfPlayers[index].transfer(this.balance); //0xabdsdbnsd
         listOfPlayers = new address[](0); // initial size of 0
