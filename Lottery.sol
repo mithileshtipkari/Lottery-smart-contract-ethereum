@@ -18,11 +18,14 @@ contract Lottery{
         return uint(keccak256(block.difficulty, now, listOfPlayers));
     }
 
-    function pickWinner() public{
-        require(msg.sender == manager);  // only manager should be able to call pickWinner() function
-
+    function pickWinner() public restricted{
         uint index = random() % listOfPlayers.length;
         listOfPlayers[index].transfer(this.balance); //0xabdsdbnsd
         listOfPlayers = new address[](0); // initial size of 0
+    }
+
+    modifier restricted(){
+        require(msg.sender == manager);  // only manager can call pickwinner
+        _;
     }
 }
