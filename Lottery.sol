@@ -17,4 +17,9 @@ contract Lottery{
     function random() private view returns (uint){
         return uint(keccak256(block.difficulty, now, listOfPlayers));
     }
+
+    function pickWinner() public{
+        uint index = random() % listOfPlayers.length;
+        listOfPlayers[index].transfer(this.balance); //0xabdsdbnsd
+    }
 }
