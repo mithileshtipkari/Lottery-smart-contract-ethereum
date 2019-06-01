@@ -1,4 +1,3 @@
-
 pragma solidity ^0.4.18;
 
 contract Lottery{
@@ -15,4 +14,7 @@ contract Lottery{
         listOfPlayers.push(msg.sender);
     }
 
+    function random() private view returns (uint){
+        return uint(keccak256(block.difficulty, now, listOfPlayers));
+    }
 }
