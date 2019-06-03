@@ -14,47 +14,56 @@ const web3 = new Web3(provider);
 
 let lottery;
 let accounts;
+let deployedContractAddress;
 
-beforeEach(async function () {
+beforeEach(async () => {
   try{
     accounts = await web3.eth.getAccounts();
-
+    console.log('accounts--\n', accounts);
     lottery = await new web3.eth.Contract(JSON.parse(interface))
-      .deploy({data : '0x' + bytecode})
+      .deploy({data : bytecode})
       .send({from: accounts[0], gas: '1000000'})
+      .on(('receipt'), (receipt) =>{
+        console.log(receipt.contractAddress);
+        deployedContractAddress = receipt.contractAddress;
+      })
       .catch((err) => {
         console.log('err--', err);
       });
 
-      console.log('lottery', lottery);
-    // lottery.setProvider(provider);
+      // console.log('lottery aftr--\n', lottery.options.address);
+    lottery.setProvider(provider);
   } catch(error){
     console.log('error in beforeEach--', error);
   }
 
 });
 
-describe('Lottery Contract', function () {
-  it('deploys a contract', function() {
+describe('Lottery Contract', () => {
+  it('deploys a contract',() => {
     try{
-      assert.ok(lottery.options.address);
+      assert.ok(deployedContractAddress);
     } catch(error){
       console.log('error in beforeEach--', error);
     }
   });
 
-  it('enters an account', async () =>{
-    await lottery.methods.enter().send({
-      from: accounts[0],
-      value: web3.utils.toWei('0.02', 'ether')
-    });
+  it('enters an account', async () => {
+    try{
+      await lottery.methods.enter().send({
+        from: accounts[0],
+        value: web3.utils.toWei('0.02', 'ether')
+      });
 
-    const players = await lottery.methods.getPlayers().call({
-      from: accounts[0]
-    });
+      const players = await lottery.methods.getPlayers().call({
+        from: accounts[0]
+      });
 
-    assert.equal(accounts[0], players[0]);
-    assert.equal(1, player.length);
+      assert.equal(accounts[0], players[0]);
+      assert.equal(1, player.length);
+    }
+    catch(error){
+      console.log('error in enters an account--', error);
+    }
   });
-
 });
