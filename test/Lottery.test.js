@@ -21,7 +21,7 @@ beforeEach(async () => {
     accounts = await web3.eth.getAccounts();
     console.log('accounts--\n', accounts);
     lottery = await new web3.eth.Contract(JSON.parse(interface))
-      .deploy({data : bytecode})
+      .deploy({data : '0x'+bytecode})
       .send({from: accounts[0], gas: '1000000'})
       .on(('receipt'), (receipt) =>{
         console.log(receipt.contractAddress);
