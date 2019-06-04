@@ -43,6 +43,7 @@ describe('Lottery Contract', () => {
   it('deploys a contract',() => {
     try{
       assert.ok(deployedContractAddress);
+      assert.ok(lottery.options.address);
     } catch(error){
       console.log('error in beforeEach--', error);
     }
@@ -64,6 +65,21 @@ describe('Lottery Contract', () => {
     }
     catch(error){
       console.log('error in enters an account--', error);
+    }
+  });
+
+  it('only manager can call pickWinner', async () =>{
+    try{
+      await lottery.methods.pickWinner().call({
+        from: '0x123456ascbffbf' //some address which is not manager
+      }); //if manager calls pickWinner then no error will occur so err object
+          // in catch will be undefined and assert.ok will fail, that means
+          // manager has called pickWinner, but we need to check it,
+          // so to go into catch anyway, fire an error
+      assert(false);
+    } catch (err){
+      console.log('someone else is calling pickWinner');
+      assert.ok(err); // if err is undefined - no error - manager called - all ok
     }
   });
 });
