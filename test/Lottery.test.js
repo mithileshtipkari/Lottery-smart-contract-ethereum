@@ -70,7 +70,7 @@ describe('Lottery Contract', () => {
 
   it('only manager can call pickWinner', async () =>{
     try{
-      await lottery.methods.pickWinner().call({
+      await lottery.methods.pickWinner().send({
         from: '0x123456ascbffbf' //some address which is not manager
       }); //if manager calls pickWinner then no error will occur so err object
           // in catch will be undefined and assert.ok will fail, that means
