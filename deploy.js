@@ -17,5 +17,7 @@ const deploy = async () => {
   lottery = await web3.eth.Contract(JSON.parse(interface))
     .deploy({data:'0x'+bytecode})
     .send({from: accoun[0], gas:'1000000'})
+
+    console.log('contract deployed to--', lottery.options.address);
 }
 deploy();
