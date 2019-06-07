@@ -10,7 +10,7 @@ let accounts;
 const web3 = new Web3(provider);
 
 const deploy = async () => {
-  accounts = await web.eth.getAccounts();
+  accounts = await web3.eth.getAccounts();
   console.log(accounts);
 }
 deploy();
